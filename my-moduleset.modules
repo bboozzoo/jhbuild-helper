@@ -1,0 +1,17 @@
+<?xml version="1.0"?><!--*- mode: nxml -*-->
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
+<moduleset>
+
+  <autotools id="my-sample-module"
+             autogen-sh="autoreconf">
+    <branch module="my-sample-module"
+            checkoutdir="my-sample-module"/>
+    <!-- checkoutdir is relative to checkoutroot set in jhbuildrc -->
+  </autotools>
+
+  <cmake id="my-sample-cmake-module">
+    <branch module="my-sample-cmake-module"
+            checkoutdir="my-sample-cmake-module"/>
+  </cmake>
+</moduleset>

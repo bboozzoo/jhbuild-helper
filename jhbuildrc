@@ -1,0 +1,37 @@
+# -*- mode: python -*-
+# -*- coding: utf-8 -*-
+
+# packages are checked out one level up, adjust to your liking
+checkoutroot = os.path.realpath('..')
+# modules
+moduleset = os.path.join(os.path.realpath('.'), 'my-moduleset.modules')
+# default module
+modules = [ 'my-sample-module' ]
+# the prefix to configure/install modules to (must have write access)
+prefix = os.path.realpath('../install-root')
+# The following is required to make pkg-config find our .pc metadata files
+os.environ['PKG_CONFIG_PATH'] = os.path.join(prefix, 'lib/pkgconfig') \
+                                + ':' + os.path.join(prefix, 'share/pkgconfig')
+
+os.environ['CFLAGS'] = '-ggdb -O0'
+os.environ['CXXFLAGS'] = '-ggdb -O0'
+
+# A string listing additional arguments to be passed to make.
+# Set makeargs to 'V=1' for verbose build output.
+makeargs = 'V=1'
+
+# disable source updates, repo handles this part
+nonetwork = True
+
+# single make job
+# jobs = 1
+
+# default autogen arguments
+autogenargs = ''
+
+# set to True to enable clang static analyzer, make sure to have
+# ``scan-build`` tool available and working
+static_analyzer = False
+
+# uncomment to enable out of source dir builds
+# buildroot = os.path.realpath('../buildroot')

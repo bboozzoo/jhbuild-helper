@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# shortcut to start shell
+if [[ "$1" == "ss" ]]; then
+    if [[ -n "$TMUX" ]]; then
+        tmux new-window -n 'jh shell' "$0 shell"
+    else
+        echo "unsupported shell"
+    fi
+    exit
+fi
+
+# try adding user paths
+PATH=~/bin:~/.local/bin:$PATH
+export PATH
+
+JHBUILD=$(which jhbuild 2>/dev/null)
+[[ -z "$JHBUILD" ]] && {
+   echo "jhbuild not found"
+   exit 1
+}
+
+if [[ ! -t 0 || -n "$INSIDE_EMACS" || -n "$EMACS" || -n "$VIM" ]]; then
+    INTERACT=--no-interact
+    QUIET=yes
+fi
+
+# run build in subshell so that jhbuildrc paths are correct
+(
+    BUILDROOT=$(readlink -f $(dirname $0))
+    JHRC=${JHRC=$BUILDROOT/jhbuildrc}
+
+    cd $BUILDROOT
+
+    if [[ -z "$QUIET" ]]; then
+        echo -e "jhbuild wrapper:"
+        echo -e "        build dir: \033[32m$BUILDROOT\033[0m"
+        echo -e "        config:    \033[32m$JHRC\033[0m"
+        echo "For detailed usage and commands consult jhbuild documentation"
+        echo
+    fi
+
+    $JHBUILD $INTERACT -f $JHRC $*
+)
